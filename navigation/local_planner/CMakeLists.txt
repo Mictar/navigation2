@@ -31,9 +31,13 @@ ament_target_dependencies(convert rclcpp robot_msgs geometry_msgs nav_msgs tf2)
 add_executable(move src/move.cpp)
 ament_target_dependencies(move rclcpp robot_msgs geometry_msgs tf2)
 
+add_executable(nav src/nav_by_rviz.cpp)
+ament_target_dependencies(nav rclcpp geometry_msgs)
+
 install(TARGETS
 	convert
 	move
+	nav
 	DESTINATION lib/${PROJECT_NAME}
 	)
 install(

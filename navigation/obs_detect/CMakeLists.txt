@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(robot_msgs)
+project(obs_detect)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,19 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(nav_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(robot_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-	"srv/Rotation.srv"
-	"srv/Acceleration.srv"
-	"action/Nav.action"
-	"msg/Pose.msg"
-	"msg/PoseArray.msg"
-	DEPENDENCIES geometry_msgs
-	)
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
@@ -31,5 +22,13 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(obs_detect src/obs_detect.cpp)
+ament_target_dependencies(obs_detect rclcpp sensor_msgs robot_msgs)
+
+
+install(TARGETS
+	obs_detect
+	DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
